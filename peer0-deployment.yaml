@@ -23,6 +23,8 @@ spec:
            value: unix:///host/var/run/docker.sock
          - name: CORE_PEER_ADDRESSAUTODETECT
            value: "true"
+         - name: CORE_PEER_NETWORKID
+           value: nid1
          - name: CORE_LOGGING_LEVEL 
            value: DEBUG
          - name: CORE_PEER_TLS_ENABLED 
