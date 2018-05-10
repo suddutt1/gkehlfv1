@@ -10,5 +10,5 @@ spec:
     - ReadWriteMany
   nfs:
     # FIXME: use the right IP
-    server: 10.7.248.213
+    server: 10.15.248.245
     path: "/"

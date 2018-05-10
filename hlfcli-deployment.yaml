@@ -25,11 +25,13 @@ spec:
             value: cli
         command: ["sh","-c","sleep 9999999"]
         volumeMounts:
-            - mountPath: /opt
+            - mountPath: /opt/ws/
               name: nfs
-            - mountPath: "/opt/gopath/src/github.com"
+              subPath: ws
+            - mountPath: /opt/gopath/src
               name: nfs
-              subPath:  ws/chaincode/github.com
+              subPath: ws/chaincode/  
+
       volumes:
       - name: nfs
         persistentVolumeClaim:
