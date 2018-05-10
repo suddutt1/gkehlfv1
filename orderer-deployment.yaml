@@ -1,0 +1,61 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: onenet
+  name: orderer 
+spec:
+  selector:
+    matchLabels:
+      run: orderer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: orderer
+    spec:
+     
+      containers:
+      - name: orderer
+        image: hyperledger/fabric-orderer:x86_64-1.0.0
+        env:
+          - name: ORDERER_GENERAL_LOGLEVEL
+            value: debug
+          - name: ORDERER_GENERAL_LISTENADDRESS
+            value: "0.0.0.0"
+          - name: ORDERER_GENERAL_LISTENPORT
+            value: "7050"
+          - name: ORDERER_GENERAL_GENESISMETHOD
+            value: file
+          - name: ORDERER_GENERAL_GENESISFILE
+            value: /var/hyperledger/orderer/genesis.block
+          - name: ORDERER_GENERAL_LOCALMSPID
+            value: OrdererMSP
+          - name: ORDERER_GENERAL_LOCALMSPDIR
+            value: /var/hyperledger/orderer/msp
+          - name: ORDERER_GENERAL_TLS_ENABLED
+            value: "true"
+          - name: ORDERER_GENERAL_TLS_PRIVATEKEY
+            value: /var/hyperledger/orderer/tls/server.key
+          - name: ORDERER_GENERAL_TLS_CERTIFICATE
+            value: /var/hyperledger/orderer/tls/server.crt
+          - name: ORDERER_GENERAL_TLS_ROOTCAS
+            value: "[/var/hyperledger/orderer/tls/ca.crt]"          
+        command: ["sh","-c","orderer"]
+        ports:
+        - containerPort: 7050
+        volumeMounts:
+            - mountPath: /opt
+              name: nfs
+            - mountPath: /var/hyperledger/orderer/genesis.block
+              name: nfs
+              subPath: ws/genesis.block
+            - mountPath: /var/hyperledger/orderer/msp
+              name: nfs
+              subPath: ws/crypto-config/ordererOrganizations/onenet/orderers/orderer.onenet/msp
+            - mountPath: /var/hyperledger/orderer/tls
+              name: nfs
+              subPath: ws/crypto-config/ordererOrganizations/onenet/orderers/orderer.onenet/tls/        
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: shared-data

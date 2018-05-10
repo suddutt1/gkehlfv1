@@ -1,0 +1,85 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: onenet
+  name: peer0
+spec:
+  selector:
+    matchLabels:
+      run: peer0
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: peer0
+    spec:
+      containers:
+        
+      - name: peer0
+        image: hyperledger/fabric-peer:x86_64-1.0.0
+        env:
+         - name: CORE_VM_ENDPOINT 
+           value: unix:///host/var/run/docker.sock
+         - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE 
+           value: bc_fabricnetwork
+         - name: CORE_LOGGING_LEVEL 
+           value: DEBUG
+         - name: CORE_PEER_TLS_ENABLED 
+           value: "true" 
+         - name: CORE_PEER_ENDORSER_ENABLED 
+           value: "true" 
+         - name: CORE_PEER_GOSSIP_USELEADERELECTION 
+           value: "true" 
+         - name: CORE_PEER_GOSSIP_ORGLEADER 
+           value: "false"
+         - name: CORE_PEER_PROFILE_ENABLED 
+           value: "true" 
+         - name: CORE_PEER_TLS_CERT_FILE 
+           value: /etc/hyperledger/fabric/tls/server.crt
+         - name: CORE_PEER_TLS_KEY_FILE 
+           value: /etc/hyperledger/fabric/tls/server.key
+         - name: CORE_PEER_TLS_ROOTCERT_FILE 
+           value: /etc/hyperledger/fabric/tls/ca.crt
+         - name: CORE_PEER_ID 
+           value: peer0.onenet
+         - name: CORE_PEER_ADDRESS 
+           value: peer0.onenet:7051
+         - name: CORE_PEER_CHAINCODELISTENADDRESS 
+           value: localhost:7052
+         - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT 
+           value: peer0.onenet:7051
+         - name: CORE_PEER_LOCALMSPID 
+           value: Org1MSP
+         - name: CORE_LEDGER_STATE_STATEDATABASE 
+           value: goleveldb
+         - name: CORE_PEER_GOSSIP_BOOTSTRAP 
+           value: peer0.onenet:7051
+       
+        command: ["sh", "-c", "peer node start"]
+        ports:
+        - containerPort: 7051
+        - containerPort: 7052
+        - containerPort: 7053
+        volumeMounts:
+          - mountPath: /opt
+            name: nfs
+          - mountPath: /etc/hyperledger/fabric/msp
+            name: nfs
+            subPath: ws/crypto-config/peerOrganizations/onenet/peers/peer0.onenet/msp
+          - mountPath: /etc/hyperledger/fabric/tls
+            name: nfs
+            subPath: ws/crypto-config/peerOrganizations/onenet/peers/peer0.onenet/tls
+          - mountPath: /host/var/run/docker.sock
+            name: dockersocket
+         
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: shared-data
+      - name: dockersocket
+        hostPath:
+          path: /var/run/docker.sock
+
+        
+---

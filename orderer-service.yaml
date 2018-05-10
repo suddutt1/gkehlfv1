@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: onenet
+  name: orderer
+  labels:
+    app: orderer
+spec:
+  ports:
+   - port: 7050
+     targetPort: 7050
+  selector:
+     run: orderer
+    

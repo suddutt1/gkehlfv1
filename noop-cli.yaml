@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: onenet
+  name: noopcli
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: noopcli
+    spec:
+      containers:
+      - name: noopcli
+        image: suddutt1/noopcli:2.0.0
+        volumeMounts:
+            # name must match the volume name below
+            - name: nfs
+              mountPath: "/opt"
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: shared-data
