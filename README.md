@@ -30,8 +30,27 @@ kubectl apply -f ./orderer-service.yaml
 kubectl apply -f ./peer0-deployment.yaml 
 kubectl apply -f ./peer0-service.yaml 
 
+Check if the orderer and peer is created or not 
+```
+kubectl --namespace=onenet get pods
+```
+kubectl apply -f ./hlfcli-deployment.yaml 
+
+Check if the CLI created or not 
+
+```
 kubectl --namespace=onenet get pods
 
-kubectl apply -f ./hlfcli-deployment.yaml 
+```
+
 kubectl exec -it `kubectl --namespace=onenet get pods | grep -e "hlfcli" | awk '{print $1}' ` bash --namespace=onenet
 
+kubectl logs `kubectl --namespace=onenet get pods | grep -e "peer0" | awk '{print $1}' `  --namespace=onenet
+kubectl exec -it `kubectl --namespace=onenet get pods | grep -e "peer0" | awk '{print $1}' ` bash --namespace=onenet
+
+### Delete network elements
+
+kubectl --namespace=onenet delete service peer0
+kubectl --namespace=onenet delete service orderer
+kubectl --namespace=onenet delete deployment peer0
+kubectl --namespace=onenet delete deployment orderer
