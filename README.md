@@ -32,7 +32,7 @@ kubectl apply -f ./peer0-service.yaml
 
 Check if the orderer and peer is created or not 
 ```
-kubectl --namespace=onenet get pods
+kubectl --all-namespace get pods
 ```
 kubectl apply -f ./hlfcli-deployment.yaml 
 

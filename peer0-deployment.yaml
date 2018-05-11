@@ -55,8 +55,6 @@ spec:
            value: goleveldb
          - name: CORE_PEER_GOSSIP_BOOTSTRAP 
            value: peer0.onenet:7051
-
-       
         command: ["sh", "-c", "peer node start"]
         ports:
         - containerPort: 7051
