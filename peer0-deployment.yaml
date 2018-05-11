@@ -23,8 +23,6 @@ spec:
            value: unix:///host/var/run/docker.sock
          - name: CORE_PEER_ADDRESSAUTODETECT
            value: "true"
-         - name: CORE_PEER_NETWORKID
-           value: nid1
          - name: CORE_LOGGING_LEVEL 
            value: DEBUG
          - name: CORE_PEER_TLS_ENABLED 
@@ -48,7 +46,7 @@ spec:
          - name: CORE_PEER_ADDRESS 
            value: peer0.onenet:7051
          - name: CORE_PEER_CHAINCODELISTENADDRESS 
-           value: 127.0.0.1:7052
+           value: peer0.onenet:7052
          - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT 
            value: peer0.onenet:7051
          - name: CORE_PEER_LOCALMSPID 
@@ -57,6 +55,7 @@ spec:
            value: goleveldb
          - name: CORE_PEER_GOSSIP_BOOTSTRAP 
            value: peer0.onenet:7051
+
        
         command: ["sh", "-c", "peer node start"]
         ports:
@@ -64,8 +63,9 @@ spec:
         - containerPort: 7052
         - containerPort: 7053
         volumeMounts:
-          - mountPath: /opt
+          - mountPath: /opt/ws
             name: nfs
+            subPath: ws
           - mountPath: /etc/hyperledger/fabric/msp
             name: nfs
             subPath: ws/crypto-config/peerOrganizations/onenet/peers/peer0.onenet/msp
