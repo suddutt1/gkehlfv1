@@ -48,7 +48,7 @@ spec:
          - name: CORE_PEER_ADDRESS 
            value: peer0.onenet:7051
          - name: CORE_PEER_CHAINCODELISTENADDRESS 
-           value: localhost:7052
+           value: 127.0.0.1:7052
          - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT 
            value: peer0.onenet:7051
          - name: CORE_PEER_LOCALMSPID 
