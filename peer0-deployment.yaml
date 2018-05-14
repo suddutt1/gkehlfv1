@@ -59,7 +59,7 @@ spec:
            value: peer0.onenet
          - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
            value: bridge
-        command: ["sh", "-c", "sleep 99999"]
+        command: ["sh", "-c", "peer node start"]
         ports:
         - containerPort: 7051
         - containerPort: 7052

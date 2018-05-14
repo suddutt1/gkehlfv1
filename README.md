@@ -94,7 +94,7 @@ kubectl --namespace=onenet delete deployment orderer
 ### To query the chain code 
 
 ```sh
-
+. setpeer.sh Org1 peer0
 peer chaincode query -C xcchannel -n mcc -c '{"Args":["probe",""]}'
 
 ```
@@ -103,7 +103,7 @@ peer chaincode query -C xcchannel -n mcc -c '{"Args":["probe",""]}'
 
 ```sh
 cd /opt/ws
-. setpeer Org1 pee0
+. setpeer.sh Org1 peer0
 
 peer chaincode invoke -o orderer.onenet:7050  --tls --cafile $ORDERER_CA -C xcchannel -n mcc -c '{"Args":["createAsset","n","{ \"objType\":\"car\", \"n\":\"1\", \"color\":\"red\" }"]}'
 ```
@@ -112,6 +112,7 @@ peer chaincode invoke -o orderer.onenet:7050  --tls --cafile $ORDERER_CA -C xcch
 
 ```sh
 cd /opt/ws
+. setpeer.sh Org1 peer0
 peer chaincode query -C xcchannel -n mcc -c '{"Args":["getAssetDetails","1"]}'
 
 ```
