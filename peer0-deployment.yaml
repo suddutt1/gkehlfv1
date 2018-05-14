@@ -45,8 +45,6 @@ spec:
            value: peer0.onenet
          - name: CORE_PEER_ADDRESS 
            value: peer0.onenet:7051
-         - name: CORE_PEER_CHAINCODELISTENADDRESS 
-           value: peer0.onenet:7052
          - name: CORE_PEER_GOSSIP_EXTERNALENDPOINT 
            value: peer0.onenet:7051
          - name: CORE_PEER_LOCALMSPID 
@@ -55,7 +53,13 @@ spec:
            value: goleveldb
          - name: CORE_PEER_GOSSIP_BOOTSTRAP 
            value: peer0.onenet:7051
-        command: ["sh", "-c", "peer node start"]
+         - name: CORE_VM_DOCKER_ATTACHSTDOUT
+           value: "true"
+         - name: CORE_PEER_TLS_SERVERHOSTOVERRIDE
+           value: peer0.onenet
+         - name: CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE
+           value: bridge
+        command: ["sh", "-c", "sleep 99999"]
         ports:
         - containerPort: 7051
         - containerPort: 7052
